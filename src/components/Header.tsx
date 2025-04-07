@@ -1,5 +1,3 @@
-'use client';
-
 import { AppBar, Toolbar, Typography, Container } from '@mui/material';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
