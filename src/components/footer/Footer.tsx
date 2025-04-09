@@ -8,7 +8,7 @@ export default function Footer() {
       sx={{
         py: 3,
         mt: "auto",
-        backgroundColor: "primary.main",
+        backgroundColor: "secondary.main",
         color: "primary.contrastText",
       }}
     >
