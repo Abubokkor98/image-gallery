@@ -1,4 +1,3 @@
-// app/api/images/route.ts
 import dbConnect from '@/lib/mongodb';
 import { NextResponse } from 'next/server';
 
