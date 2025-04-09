@@ -20,9 +20,10 @@ export default function Home() {
 
   return (
     <div className="p-4">
-      <div className=" flex flex-col md:flex-row justify-center items-start md:items-center gap-4 mb-6">
+      <div className="flex flex-col md:flex-row justify-center items-start md:items-center gap-4 mb-6">
         <UploadButton onImageUploaded={handleImageUploaded} />
-        <div className="max-w-64">
+
+        <div className="w-full md:w-auto max-w-sm">
           <SearchBar onSearch={handleSearch} />
         </div>
       </div>
