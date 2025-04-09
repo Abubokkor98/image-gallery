@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Image Gallery App
 
-## Getting Started
+A responsive image gallery application built with Next.js, TypeScript, and Material UI. Users can upload, view, search, and delete images with a modern UI and infinite scrolling functionality.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Image Upload**: Upload single or multiple images via a user-friendly interface
+- **Image Grid Display**: View all uploaded images in a responsive grid layout
+- **Image Preview**: Click on any image to view a larger preview in a modal
+- **Delete Functionality**: Remove images with a confirmation dialog
+- **Infinite Scroll**: Load more images as you scroll down the page
+- **Search Functionality**: Filter images by title
+- **Responsive Design**: Works seamlessly on mobile, tablet, and desktop devices
+- **Modern UI**: Clean interface built with Material UI components
+
+## Tech Stack
+
+- **Frontend**: Next.js, TypeScript, Material UI
+- **Backend**: Next.js API Routes
+- **Database**: MongoDB for image metadata storage
+- **Image Storage**: ImgBB API for cloud image hosting
+- **Styling**: Tailwind CSS with custom configurations
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/image-gallery-app.git
+   cd image-gallery-app
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Set up environment variables:
+   The repository includes the `.env` file with necessary configuration.
+
+4. Run the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## API Endpoints
+
+- `GET /api/images`: Retrieve all images with pagination
+- `POST /api/images`: Upload new image(s)
+- `DELETE /api/images/[id]`: Delete a specific image
+
+## Environment Variables
+
+The application uses the following environment variables:
+
+```
+MONGODB_URI=your_mongodb_connection_string
+DB_NAME=your_db_name
+NEXT_PUBLIC_IMGBB_API_KEY=your_imgbb_api_key
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Future Improvements
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Add user authentication
+- Implement image categorization/tagging
+- Add image editing capabilities
+- Implement drag-and-drop for image uploads
+- Add social sharing functionality
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Acknowledgements
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js](https://nextjs.org/)
+- [Material UI](https://mui.com/)
+- [ImgBB API](https://api.imgbb.com/)
+- [MongoDB](https://www.mongodb.com/)
