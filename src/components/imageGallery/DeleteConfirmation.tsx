@@ -1,13 +1,11 @@
-"use client";
-
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
-} from '@mui/material';
+  Button,
+} from "@mui/material";
 
 interface DeleteConfirmationProps {
   open: boolean;
@@ -15,13 +13,18 @@ interface DeleteConfirmationProps {
   onConfirm: () => void;
 }
 
-const DeleteConfirmation = ({ open, onClose, onConfirm }: DeleteConfirmationProps) => {
+const DeleteConfirmation = ({
+  open,
+  onClose,
+  onConfirm,
+}: DeleteConfirmationProps) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Delete Image</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to delete this image? This action cannot be undone.
+          Are you sure you want to delete this image? This action cannot be
+          undone.
         </DialogContentText>
       </DialogContent>
       <DialogActions>

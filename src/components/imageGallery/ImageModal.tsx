@@ -1,20 +1,18 @@
-"use client";
-
-import { useState } from 'react';
-import { 
-  Dialog, 
-  DialogContent, 
-  IconButton, 
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  IconButton,
   Typography,
   Box,
   Chip,
   DialogActions,
-  Button
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { ImageType } from '@/types';
-import DeleteConfirmation from './DeleteConfirmation';
+  Button,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { ImageType } from "@/types";
+import DeleteConfirmation from "./DeleteConfirmation";
 
 interface ImageModalProps {
   image: ImageType | null;
@@ -30,12 +28,7 @@ const ImageModal = ({ image, open, onClose, onDelete }: ImageModalProps) => {
 
   return (
     <>
-      <Dialog
-        open={open}
-        onClose={onClose}
-        maxWidth="md"
-        fullWidth
-      >
+      <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
         <DialogContent className="relative p-0">
           <IconButton
             className="absolute top-2 right-2 bg-white bg-opacity-75 z-10"
@@ -43,7 +36,7 @@ const ImageModal = ({ image, open, onClose, onDelete }: ImageModalProps) => {
           >
             <CloseIcon />
           </IconButton>
-          
+
           <Box className="flex flex-col md:flex-row">
             <Box className="md:w-2/3 p-4">
               <img
@@ -52,34 +45,20 @@ const ImageModal = ({ image, open, onClose, onDelete }: ImageModalProps) => {
                 className="w-full h-auto object-contain max-h-96"
               />
             </Box>
-            
+
             <Box className="md:w-1/3 p-4 bg-gray-50">
               <Typography variant="h5" component="h2" className="mb-2">
                 {image.title}
               </Typography>
-              
-              <Typography variant="body2" color="text.secondary" className="mb-4">
+
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                className="mb-4"
+              >
                 Uploaded on {new Date(image.createdAt).toLocaleDateString()}
               </Typography>
-              
-              {image.tags && image.tags.length > 0 && (
-                <Box className="mb-4">
-                  <Typography variant="subtitle2" className="mb-2">
-                    Tags:
-                  </Typography>
-                  <Box className="flex flex-wrap gap-1">
-                    {image.tags.map((tag, index) => (
-                      <Chip 
-                        key={index} 
-                        label={tag} 
-                        size="small" 
-                        className="bg-blue-100"
-                      />
-                    ))}
-                  </Box>
-                </Box>
-              )}
-              
+
               <Button
                 startIcon={<DeleteIcon />}
                 variant="outlined"
@@ -94,7 +73,7 @@ const ImageModal = ({ image, open, onClose, onDelete }: ImageModalProps) => {
           </Box>
         </DialogContent>
       </Dialog>
-      
+
       <DeleteConfirmation
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}

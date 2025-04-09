@@ -3,7 +3,6 @@ export interface ImageType {
   title: string;
   url: string;
   thumbnail: string;
-  tags?: string[];
   createdAt: Date;
   updatedAt: Date;
 }
