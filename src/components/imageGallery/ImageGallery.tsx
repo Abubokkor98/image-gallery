@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Grid, Box, Typography, CircularProgress } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Typography,
+  CircularProgress,
+  useTheme,
+} from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { ImageType, PaginatedResponse } from "@/types";
@@ -20,6 +26,7 @@ const ImageGallery = ({ searchQuery }: ImageGridProps) => {
   const [hasMore, setHasMore] = useState(true);
   const [selectedImage, setSelectedImage] = useState<ImageType | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const theme = useTheme();
 
   // Fetch images from the API with pagination and optional search query
   const fetchImages = async (pageNumber: number, query: string = "") => {
@@ -37,7 +44,7 @@ const ImageGallery = ({ searchQuery }: ImageGridProps) => {
         throw new Error("Failed to fetch images");
       }
 
-      // Parse the response JSON to get the images and pagination info
+      // Parse the respons
       const data: PaginatedResponse = await response.json();
 
       // If first page, reset the images array, else append to it
@@ -102,7 +109,7 @@ const ImageGallery = ({ searchQuery }: ImageGridProps) => {
   if (loading && images.length === 0) {
     return (
       <Box className="flex justify-center items-center h-64">
-        <CircularProgress />
+        <CircularProgress sx={{ color: theme.palette.secondary.main }} />
       </Box>
     );
   }
@@ -135,7 +142,7 @@ const ImageGallery = ({ searchQuery }: ImageGridProps) => {
         hasMore={hasMore}
         loader={
           <Box className="flex justify-center my-4">
-            <CircularProgress />
+            <CircularProgress sx={{ color: theme.palette.secondary.main }} />
           </Box>
         }
         endMessage={
