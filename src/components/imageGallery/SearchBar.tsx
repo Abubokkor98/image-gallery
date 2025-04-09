@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField, InputAdornment } from "@mui/material";
+import { TextField, InputAdornment, useTheme } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 interface SearchBarProps {
@@ -8,7 +8,9 @@ interface SearchBarProps {
 
 const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const theme = useTheme();
 
+  // update local state and trigger search handler from parent
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -19,16 +21,31 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
     <TextField
       fullWidth
       variant="outlined"
-      placeholder="Search images by title or tags..."
+      placeholder="Search images by title..."
       value={searchQuery}
       onChange={handleSearch}
       className="mb-6"
+      color="secondary"
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <SearchIcon />
+            <SearchIcon color="secondary" />
           </InputAdornment>
         ),
+        sx: {
+          borderRadius: 2,
+          // customize outline style when focused
+          '&.Mui-focused': {
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: theme.palette.secondary.main,
+              borderWidth: 2
+            }
+          },
+          // subtle border color on hover
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.secondary.light
+          }
+        }
       }}
     />
   );

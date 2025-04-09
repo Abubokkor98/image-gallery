@@ -3,7 +3,7 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
 export default function Header() {
   return (
-    <AppBar position="static" color="primary" elevation={0}>
+    <AppBar position="sticky" color="secondary" elevation={0}>
       <Container maxWidth="lg">
         <Toolbar disableGutters>
           <PhotoLibraryIcon sx={{ display: { xs: 'flex' }, mr: 1 }} />

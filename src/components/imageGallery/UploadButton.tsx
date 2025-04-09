@@ -11,10 +11,10 @@ import {
   CircularProgress,
   Typography,
   Box,
-  Chip,
-  IconButton,
+  useTheme,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { uploadToImgBB } from "@/lib/imgbb";
 
 interface UploadButtonProps {
   onImageUploaded: () => void;
@@ -26,31 +26,38 @@ const UploadButton = ({ onImageUploaded }: UploadButtonProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const theme = useTheme();
 
+  //upload dialog
   const handleOpen = () => setOpen(true);
+
   const handleClose = () => {
     setOpen(false);
     resetForm();
   };
 
+  // reset form fields
   const resetForm = () => {
     setTitle("");
     setFile(null);
     setError("");
   };
 
+  // Handle file selection from input
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
   };
 
+  // Prevent form submission on Enter key
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       e.preventDefault();
     }
   };
 
+  // Upload image to ImgBB and save to DB
   const handleSubmit = async () => {
     if (!file) {
       setError("Please select a file to upload");
@@ -66,35 +73,17 @@ const UploadButton = ({ onImageUploaded }: UploadButtonProps) => {
       setLoading(true);
       setError("");
 
-      // Create form data for ImgBB
-      const formData = new FormData();
-      formData.append("image", file);
+      // Upload image to ImgBB
+      const image = await uploadToImgBB(file);
 
-      // Upload img to ImgBB
-      const image_hosting_api = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`;
-
-      const response = await fetch(image_hosting_api, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to upload image to ImgBB");
-      }
-
-      const imgbbData = await response.json();
-
-      if (!imgbbData.success) {
-        throw new Error(imgbbData.error?.message || "Image upload failed");
-      }
-
-      // Save image data to MongoDB
+      // Add title after ImgBB upload
       const imageData = {
         title: title.trim(),
-        url: imgbbData.data.display_url,
-        thumbnail: imgbbData.data.thumb.url,
+        url: image.url,
+        thumbnail: image.thumbnail,
       };
 
+      // Save image data to the database
       const dbResponse = await fetch("/api/images", {
         method: "POST",
         headers: {
@@ -106,7 +95,6 @@ const UploadButton = ({ onImageUploaded }: UploadButtonProps) => {
       if (!dbResponse.ok) {
         throw new Error("Failed to save image data");
       }
-
       onImageUploaded();
       handleClose();
     } catch (err) {
@@ -120,28 +108,68 @@ const UploadButton = ({ onImageUploaded }: UploadButtonProps) => {
 
   return (
     <>
+      {/* Upload Button that opens the dialog */}
       <Button
         variant="contained"
+        color="secondary"
         startIcon={<CloudUploadIcon />}
         onClick={handleOpen}
         className="mb-6"
+        sx={{
+          boxShadow: 2,
+          "&:hover": {
+            boxShadow: 4,
+          },
+        }}
       >
         Upload Images
       </Button>
 
-      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle>Upload a New Image</DialogTitle>
+      {/* Upload Dialog */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            overflow: "hidden",
+          },
+        }}
+      >
+        {/* Dialog Header */}
+        <DialogTitle
+          sx={{
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.secondary.contrastText,
+          }}
+        >
+          Upload a New Image
+        </DialogTitle>
+
+        {/* Dialog Content */}
         <DialogContent>
           <Box className="mt-4">
+            {/* Title input */}
             <TextField
               label="Image Title"
               fullWidth
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={handleKeyDown}
               margin="normal"
               required
+              color="secondary"
+              sx={{
+                "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
+                    borderColor: theme.palette.secondary.main,
+                  },
+              }}
             />
 
+            {/* File input */}
             <Box className="mt-6">
               <input
                 accept="image/*"
@@ -152,12 +180,18 @@ const UploadButton = ({ onImageUploaded }: UploadButtonProps) => {
                 onChange={handleFileChange}
               />
               <label htmlFor="contained-button-file">
-                <Button variant="outlined" component="span" fullWidth>
+                <Button
+                  variant="outlined"
+                  component="span"
+                  fullWidth
+                  color="secondary"
+                >
                   {file ? file.name : "Select Image"}
                 </Button>
               </label>
             </Box>
 
+            {/* Error message */}
             {error && (
               <Typography color="error" className="mt-2">
                 {error}
@@ -165,15 +199,20 @@ const UploadButton = ({ onImageUploaded }: UploadButtonProps) => {
             )}
           </Box>
         </DialogContent>
-        <DialogActions>
+
+        {/* Dialog Actions */}
+        <DialogActions sx={{ padding: 2 }}>
           <Button onClick={handleClose} disabled={loading}>
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             variant="contained"
+            color="secondary"
             disabled={loading}
-            startIcon={loading ? <CircularProgress size={24} /> : null}
+            startIcon={
+              loading ? <CircularProgress size={24} color="inherit" /> : null
+            }
           >
             {loading ? "Uploading..." : "Upload"}
           </Button>

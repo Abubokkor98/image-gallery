@@ -5,9 +5,8 @@ import {
   IconButton,
   Typography,
   Box,
-  Chip,
-  DialogActions,
   Button,
+  useTheme
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -23,57 +22,124 @@ interface ImageModalProps {
 
 const ImageModal = ({ image, open, onClose, onDelete }: ImageModalProps) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const theme = useTheme();
 
+  // return null if no image is selected
   if (!image) return null;
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-        <DialogContent className="relative p-0">
+      {/* Dialog acts as a modal container */}
+      <Dialog 
+        open={open} 
+        onClose={onClose} 
+        maxWidth="md" 
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: '12px',
+            overflow: 'hidden',
+            backgroundColor: theme.palette.secondary.main,
+          }
+        }}
+      >
+        {/* DialogContent holds the content inside the modal */}
+        <DialogContent sx={{ p: 0, position: 'relative' }}>
+          {/* Close icon */}
           <IconButton
-            className="absolute top-2 right-2 bg-white bg-opacity-75 z-10"
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              backgroundColor: 'rgba(255, 255, 255, 0.75)',
+              zIndex: 10,
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              }
+            }}
             onClick={onClose}
           >
             <CloseIcon />
           </IconButton>
 
-          <Box className="flex flex-col md:flex-row">
-            <Box className="md:w-2/3 p-4">
+          {/* Layout split between image and details */}
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', md: 'row' },
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.secondary.contrastText
+          }}>
+            {/* Left: image preview */}
+            <Box sx={{ 
+              width: { xs: '100%', md: '66.666667%' }, 
+              p: 3,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              bgcolor: 'rgba(0, 0, 0, 0.1)'
+            }}>
               <img
                 src={image.url}
                 alt={image.title}
-                className="w-full h-auto object-contain max-h-96"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  maxHeight: '24rem',
+                  borderRadius: '8px'
+                }}
               />
             </Box>
 
-            <Box className="md:w-1/3 p-4 bg-gray-50">
-              <Typography variant="h5" component="h2" className="mb-2">
+            {/* Right: image metadata and actions */}
+            <Box sx={{ 
+              width: { xs: '100%', md: '33.333333%' }, 
+              p: 3,
+              display: 'flex',
+              flexDirection: 'column'
+            }}>
+              <Typography 
+                variant="h5" 
+                component="h2" 
+                sx={{ 
+                  mb: 1, 
+                  color: theme.palette.secondary.contrastText,
+                  fontWeight: 600
+                }}
+              >
                 {image.title}
               </Typography>
 
               <Typography
                 variant="body2"
-                color="text.secondary"
-                className="mb-4"
+                sx={{ 
+                  mb: 2, 
+                  color: theme.palette.secondary.contrastText,
+                  opacity: 0.8
+                }}
               >
                 Uploaded on {new Date(image.createdAt).toLocaleDateString()}
               </Typography>
 
-              <Button
-                startIcon={<DeleteIcon />}
-                variant="outlined"
-                color="error"
-                onClick={() => setDeleteDialogOpen(true)}
-                fullWidth
-                className="mt-4"
-              >
-                Delete Image
-              </Button>
+              {/* Delete button */}
+              <Box sx={{ mt: 'auto' }}>
+                <Button
+                  startIcon={<DeleteIcon />}
+                  variant="contained"
+                  color="error"
+                  onClick={() => setDeleteDialogOpen(true)}
+                  fullWidth
+                  sx={{ mt: 2 }}
+                >
+                  Delete Image
+                </Button>
+              </Box>
             </Box>
           </Box>
         </DialogContent>
       </Dialog>
 
+      {/* Delete confirmation dialog */}
       <DeleteConfirmation
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
