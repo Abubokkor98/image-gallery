@@ -14,7 +14,7 @@ export default function Home() {
   };
 
   const handleImageUploaded = () => {
-    // Force refresh of the image grid by changing the key
+    // force refresh of the image grid by changing the key
     setRefreshKey((prev) => prev + 1);
   };
 
