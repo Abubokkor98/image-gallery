@@ -26,8 +26,8 @@ A responsive image gallery application built with Next.js, TypeScript, and Mater
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/image-gallery-app.git
-   cd image-gallery-app
+   git clone https://github.com/Abubokkor98/image-gallery.git
+   cd image-gallery
    ```
 
 2. Install dependencies:
