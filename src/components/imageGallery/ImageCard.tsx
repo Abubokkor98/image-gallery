@@ -52,7 +52,7 @@ const ImageCard = ({ image, onClick }: ImageCardProps) => {
             }}
           />
 
-          {/* Gradient overlay to enhance text readability at the bottom */}
+          {/* Gradient overlay*/}
           <Box
             sx={{
               position: "absolute",
